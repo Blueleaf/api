@@ -6,6 +6,10 @@ We are exposing some account data via a read only API.  Users can get API tokens
 
 All requests are behind an SSL-protected (HTTPS) service, and use HTTP basic authentication.  Use the user API token as the "username" part of an http basic auth request, use anything you'd like for the "password" part.
 
+## Usage
+
+There is a blueleaf_client.rb demo script, which shows how one might use HTTParty to access the service.
+
 ## Requests
 
 ### Advisor summary
