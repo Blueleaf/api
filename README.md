@@ -4,7 +4,7 @@
 
 We are exposing some account data via a read only API.  Users can get API tokens from the web UI, or by asking Blueleaf support.
 
-Use the API token as the "username" part of an http basic auth request, use anything you'd like for the "password" part.
+All requests are behind an SSL-protected (HTTPS) service, and use HTTP basic authentication.  Use the user API token as the "username" part of an http basic auth request, use anything you'd like for the "password" part.
 
 ## Requests
 
