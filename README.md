@@ -2,13 +2,13 @@
 
 ## Overview
 
-We are exposing some account data via a read only API.  Users can get API tokens from the web UI, or by asking Blueleaf support.
+We are exposing some account data via a read only API.  Users can get API tokens  by asking Blueleaf support. Eventually API tokens will be available directly from the web interface.
 
 All requests are behind an SSL-protected (HTTPS) service, and use HTTP basic authentication.  Use the user API token as the "username" part of an http basic auth request, use anything you'd like for the "password" part.
 
 ## Usage
 
-There is a blueleaf_client.rb demo script, which shows how one might use HTTParty to access the service.
+There is a blueleaf_client.rb demo script in this repository. It shows how one might use HTTParty to access the service.
 
 ## Requests
 
