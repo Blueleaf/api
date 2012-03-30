@@ -2,25 +2,40 @@ require 'rubygems'
 require 'pp'
 require 'httparty'
 
-class BlueleafClient
+class HttpClient
   include HTTParty
 
-  base_uri 'https://blueleaf.com/api/v1'
-
-  def initialize(token)
+  def initialize(uri, token)
+    self.class.base_uri uri
     @options = { :basic_auth => { :username => token } }
   end
 
+  def get(query)
+    self.class.get(query, @options)
+  end
+end
+
+class BlueleafClient
+
+  attr_reader :http_client
+
+  def initialize(token)
+    # base_uri 'https://blueleaf.com/api/v1'
+    uri = 'https://build.blueleaf.com/api/v1'
+
+    @http_client = HttpClient.new(uri, token)
+  end
+
   def advisor
-    self.class.get('/advisor.xml', @options)
+    http_client.get '/advisor.xml'
   end
 
   def households
-    self.class.get('/households.xml', @options)
+   http_client.get '/households.xml'
   end
 
   def household(id)
-    self.class.get("/households/#{id}.xml", @options)
+   http_client.get "/households/#{id}.xml"
   end
 
 end
