@@ -16,13 +16,10 @@ class HttpClient
 end
 
 class BlueleafClient
-
   attr_reader :http_client
 
   def initialize(token)
-    # base_uri 'https://blueleaf.com/api/v1'
-    uri = 'https://build.blueleaf.com/api/v1'
-
+    uri = 'https://blueleaf.com/api/v1'
     @http_client = HttpClient.new(uri, token)
   end
 
@@ -37,22 +34,21 @@ class BlueleafClient
   def household(id)
    http_client.get "/households/#{id}.xml"
   end
-
 end
 
-if ARGV.empty?
+token, id = ARGV
+
+if token.nil?
   puts "Usage: ruby blueleaf_client.rb <api_token>"
+  puts "       ruby blueleaf_client.rb <api_token> <id>"
   exit
+end
+
+client = BlueleafClient.new(token)
+
+if id.nil?
+  pp client.advisor
+  pp client.households
 else
-  client = BlueleafClient.new(ARGV.first)
-
-  advisor = client.advisor
-
-  households = client.households
-
-  household = client.household(households.first.last.first['id'])
-
-  pp advisor
-  pp households
-  pp household
+  pp client.household(id)
 end
