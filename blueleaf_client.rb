@@ -19,7 +19,7 @@ class BlueleafClient
   attr_reader :http_client
 
   def initialize(token)
-    uri = 'https://blueleaf.com/api/v1'
+    uri = 'https://secure.blueleaf.com/api/v1'
     @http_client = HttpClient.new(uri, token)
   end
 
