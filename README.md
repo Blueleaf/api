@@ -60,7 +60,10 @@ There is a blueleaf_client.rb demo script in this repository. It shows how one m
               <company-name>Apple, Inc</company-name>
             </holding>
           </holdings>
-        <account>
+          <account-type>
+            <name>individual</name>
+          </account-type>
+        </account>
       </accounts>
     <household>
 
