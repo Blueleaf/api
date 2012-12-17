@@ -62,6 +62,7 @@ There is a blueleaf_client.rb demo script in this repository. It shows how one m
           </holdings>
           <account-type>
             <name>individual</name>
+            <display-name>individual</display-name>
           </account-type>
         </account>
       </accounts>
