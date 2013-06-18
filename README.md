@@ -26,8 +26,6 @@ In some cases there is a benefit to querying the API directly, rather than throu
 
     % curl --user <token>:skip-password https://secure.blueleaf.com/api/v1/advisor.xml
 
-#### Command Line Testing
-
 ## Requests
 
 ### Advisor summary
