@@ -1,3 +1,19 @@
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [Blueleaf API Documentation](#blueleaf-api-documentation)
+	- [Overview](#overview)
+	- [Usage](#usage)
+		- [Basic Testing](#basic-testing)
+			- [Browser Testing](#browser-testing)
+			- [Command Line Testing](#command-line-testing)
+	- [Requests](#requests)
+		- [Advisor summary](#advisor-summary)
+		- [Advisor households listing](#advisor-households-listing)
+		- [Advisor household detail](#advisor-household-detail)
+		- [Personal summary](#personal-summary)
+		- [Schema (partial)](#schema-partial)
+	- [Support](#support)
+
 # Blueleaf API Documentation
 
 ## Overview
