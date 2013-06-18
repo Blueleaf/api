@@ -43,8 +43,9 @@ In some cases there is a benefit to querying the API directly, rather than throu
     % curl --user <token>:skip-password https://secure.blueleaf.com/api/v1/advisor.xml
 
 ## Requests
+All requests are scoped relative to the API token provided. API tokens may be generated at the administrator level across multiple advisors in a firm. Or they may be generated at the individual advisor level and show only the households that advisor may access.
 
-### Advisor summary
+### Admin summary
 
     GET /api/v1/advisor.xml
 
@@ -53,7 +54,7 @@ In some cases there is a benefit to querying the API directly, rather than throu
       <full-name>User Fullname</full-name>
     </advisor>
 
-### Advisor households listing
+### Households listing
 
     GET /api/v1/households.xml
 
@@ -65,7 +66,7 @@ In some cases there is a benefit to querying the API directly, rather than throu
       </household>
     </households>
 
-### Advisor household detail
+### Household detail
 
     GET /api/v1/households/123.xml
 
