@@ -12,7 +12,7 @@
 		- [Admin summary](#admin-summary)
 		- [Households listing](#households-listing)
 		- [Household detail](#household-detail)
-		- [Multiple households with details](#multiple-households-with-details)
+		- [Multiple households with details (beta)](#multiple-households-with-details-beta)
 		- [Schema (partial)](#schema-partial)
 	- [Support](#support)
 
@@ -101,7 +101,9 @@ All requests are scoped relative to the API token provided. API tokens may be ge
       </accounts>
     <household>
 
-### Multiple households with details
+### Multiple households with details (beta)
+
+**WARNING** This feature is beta-only. The interface is not final, and may change without notice.
 
 If you supply a 'page' parameter to the households request, you will get paginated detailed output. 
 Page numbers are zero-indexed. 
