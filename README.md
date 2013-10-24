@@ -1,27 +1,19 @@
 # Blueleaf API Documentation
 
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
-
-- [Blueleaf API Documentation](#blueleaf-api-documentation)
-	- [Overview](#overview)
-	- [Usage](#usage)
-		- [Basic Testing](#basic-testing)
-			- [Browser Testing](#browser-testing)
-			- [Command Line Testing](#command-line-testing)
-	- [Requests](#requests)
-		- [Admin summary](#admin-summary)
-		- [Households listing](#households-listing)
-		- [Household detail](#household-detail)
-		- [Multiple households with details (beta)](#multiple-households-with-details-beta)
-		- [Schema (partial)](#schema-partial)
-	- [Support](#support)
-
 ## Overview
 
 We are exposing some account data via a read only API.  Users can get API tokens directly from the Blueleaf web interface.
 
 All requests are behind an SSL-protected (HTTPS) service, and use HTTP basic authentication.  Use the user API token as the "username" part of an http basic auth request, use anything you'd like for the "password" part.
 
+## Deprecation Notice
+
+The following will be removed in a future version of the API:
+
+    <holding>
+      <id /> // The id attribute will be removed. Please use <holding-id> to relate new holdings to historical holdings
+    </holding>
+    
 ## Usage
 
 There is a blueleaf_client.rb demo script in this repository. It shows how one might use HTTParty to access the service.
@@ -83,7 +75,7 @@ All requests are scoped relative to the API token provided. API tokens may be ge
           <last-update>2011-01-01T11:11:11Z</last-update>
           <holdings>
             <holding>
-              <id>789</id>
+              <holding-id>789</holding-id>
               <description>Apple, Inc stock</description>
               <period>2011-01-01</period>
               <price>345.67</price>
