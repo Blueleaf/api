@@ -185,68 +185,96 @@ For future updates, you should supply a since_id equal to the id of the last tra
 
 The example below uses the bulk entry point. It shows collecting the latest transaction only, then collecting all transactions, followed by a final iteration returning no transactions.
 
-    $ curl "https://GBqKXUDVHP20iXMcFJPUy1fU@secure.blueleaf.com/api/v1/transactions"
+    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0" 
     <?xml version="1.0" encoding="UTF-8"?>
     <transactions>
-     <curent_page>0</curent_page>
-     <total_pages>1</total_pages>
-     <transaction>
-       <account-id>116</account-id>
-       <amount>500.0</amount>
-       <cancelled-on nil="true"></cancelled-on>
-       <description>61745EN56/MORGAN STANLEY STEP</description>
-       <id>33</id>
-       <period>2013-10-15</period>
-       <price>102.8625</price>
-       <quantity nil="true"></quantity>
-       <symbol>61745en56</symbol>
-       <symbol-type nil="true"></symbol-type>
-       <transaction-date>2013-10-15T04:00:00Z</transaction-date>
-       <category-label>Investment Interest</category-label>
-     </transaction>
+      <current_page>0</current_page>
+      <total_pages>40</total_pages>
+      <transaction>
+        <account-id>1936</account-id>
+        <amount>600.0</amount>
+        <cancelled-on nil="true"></cancelled-on>
+        <description>Tfr BANK OF AMERICA, N, CHRISTOPHER THORtype: MONEYLINK TRANSFER</description>
+        <id>4285146</id>
+        <period>2011-02-11</period>
+        <price nil="true"></price>
+        <quantity nil="true"></quantity>
+        <symbol nil="true"></symbol>
+        <symbol-type nil="true"></symbol-type>
+        <transaction-date>2011-02-10T21:00:00-11:00</transaction-date>
+        <transaction-category>Transfer</transaction-category>
+        <security-type nil="true"></security-type>
+      </transaction>
+      <!--
+        output ommitted for brevity
+      -->
+      <transaction>
+        <account-id>873</account-id>
+        <amount>2.58</amount>
+        <cancelled-on nil="true"></cancelled-on>
+        <description>FIDELITY CASH RESERVES - DIVIDEND RECEIVED</description>
+        <id>4312857</id>
+        <period>2010-12-31</period>
+        <price nil="true"></price>
+        <quantity nil="true"></quantity>
+        <symbol>FDRXX</symbol>
+        <symbol-type nil="true"></symbol-type>
+        <transaction-date>2010-12-30T21:00:00-11:00</transaction-date>
+        <transaction-category>Dividend</transaction-category>
+        <security-type>moneyMarketFund</security-type>
+      </transaction>
     </transactions>
 
-    $ curl "https://GBqKXUDVHP20iXMcFJPUy1fU@secure.blueleaf.com/api/v1/transactions?since_id=0"
+    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=1"
+    # output omitted
+
+    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=2"
+    # output omitted
+
+    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=39"
     <?xml version="1.0" encoding="UTF-8"?>
     <transactions>
-     <curent_page>0</curent_page>
-     <total_pages>1</total_pages>
-     <transaction>
-       <account-id>1</account-id>
-       <amount>2.0</amount>
-       <cancelled-on nil="true"></cancelled-on>
-       <description></description>
-       <id>1</id>
-       <period>2013-11-03</period>
-       <price nil="true"></price>
-       <quantity nil="true"></quantity>
-       <symbol nil="true"></symbol>
-       <symbol-type nil="true"></symbol-type>
-       <transaction-date nil="true"></transaction-date>
-       <category-label>Deposit</category-label>
-     </transaction>
-     <!--
-       31 transactions ommitted for brevity
-     -->
-     <transaction>
-       <account-id>116</account-id>
-       <amount>500.0</amount>
-       <cancelled-on nil="true"></cancelled-on>
-       <description>61745EN56/MORGAN STANLEY STEP</description>
-       <id>33</id>
-       <period>2013-10-15</period>
-       <price>102.8625</price>
-       <quantity nil="true"></quantity>
-       <symbol>61745en56</symbol>
-       <symbol-type nil="true"></symbol-type>
-       <transaction-date>2013-10-15T04:00:00Z</transaction-date>
-       <category-label>Investment Interest</category-label>
-     </transaction>
+      <current_page>39</current_page>
+      <total_pages>40</total_pages>
+      <transaction>
+        <account-id>9468</account-id>
+        <amount>-168.35</amount>
+        <cancelled-on nil="true"></cancelled-on>
+        <description>Preauthorized Debit-VERIZON ONLINE PMT</description>
+        <id>15379934</id>
+        <period>2014-01-10</period>
+        <price nil="true"></price>
+        <quantity nil="true"></quantity>
+        <symbol nil="true"></symbol>
+        <symbol-type nil="true"></symbol-type>
+        <transaction-date>2014-01-09T21:00:00-11:00</transaction-date>
+        <transaction-category>Uncategorized</transaction-category>
+        <security-type nil="true"></security-type>
+      </transaction>
+      <!--
+        output omitted for brevity
+      -->
+      <transaction>
+        <account-id>9468</account-id>
+        <amount>90.0</amount>
+        <cancelled-on nil="true"></cancelled-on>
+        <description>ATM Deposit-DDA DEPOSIT</description>
+        <id>15784241</id>
+        <period>2014-02-03</period>
+        <price nil="true"></price>
+        <quantity nil="true"></quantity>
+        <symbol nil="true"></symbol>
+        <symbol-type nil="true"></symbol-type>
+        <transaction-date>2014-02-02T21:00:00-11:00</transaction-date>
+        <transaction-category>Uncategorized</transaction-category>
+        <security-type nil="true"></security-type>
+      </transaction>
     </transactions>
 
-    $ curl "https://GBqKXUDVHP20iXMcFJPUy1fU@secure.blueleaf.com/api/v1/transactions?since_id=0&page=1"
+    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=40"
     <?xml version="1.0" encoding="UTF-8"?>
     <transactions/>
+    $ 
 
 ## Schema (partial)
 
