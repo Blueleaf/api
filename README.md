@@ -145,7 +145,110 @@ with the single-household details request (api/v1/households/1.xml)
       <household>
     </households>
 
-### Schema (partial)
+## Transactions (beta)
+
+### Transactions Overview
+
+The transactions API has two entry-points:
+
+    /api/v1/transactions.xml
+    /api/v1/households/:household_id/transactions.xml
+
+and two options:
+
+    since_id
+    page
+
+The first entry point is for bulk downloading. The second one is for a particular household. 
+
+### Parameters
+
+If you supply no options, then you will get the last transaction for the query. Transactions are delivered in order of their id. We use an id-based "high water mark" synchronization technique. The bare query is an efficient/quick way to find out if you are up to date or not. If you have the transaction that it returns, then no new transactions have been added since your last pull. 
+
+If you supply a "since_id", you will git all transactions that have been imported since the one who's id you supplied. There is never a transaction 0, so you can always get all transactions by supplying since_id=0. Note: we do **not** return the transaction with the id that you specify. You should read the query as "return all transactions that have been imported since transaction N". This means you can also test for new transactions by supplying the last transaction ID in your system as the since_id. If there are no new transactions, you will get an empty transaction list back.
+
+If you do not supply a page, then you will get page 0 of the query. If you do, then you will get that page. Page numbers start at zero, so e.g. specifying page=1 gives you the *second* page, etc.
+
+### Iteration
+
+The page size is currently set at 100 transactions, but this may change and it may even be dynamic. You should drive your iteration as follows:
+
+Every query returns two additional attributes - the current page and the total number of pages for the query. Note that the number of pages can change between queries, as can the number of queries on the last page. This will happen if additional transactions are imported by our system between your queries. You should only take the page count as a guide, guarantee. Instead, you should terminate your iteration in one of three ways:
+
+* when you get a page who's current_page == total_pages - 1 
+* when you get a page with an empty <transactions /> list.
+
+For future updates, you should supply a since_id equal to the id of the last transaction in your system (or the last one for the household if you are using that entry point).
+
+
+### Example
+
+The example below uses the bulk entry point. It shows collecting the latest transaction only, then collecting all transactions, followed by a final iteration returning no transactions.
+
+    $ curl "https://GBqKXUDVHP20iXMcFJPUy1fU@secure.blueleaf.com/api/v1/transactions"
+    <?xml version="1.0" encoding="UTF-8"?>
+    <transactions>
+     <curent_page>0</curent_page>
+     <total_pages>1</total_pages>
+     <transaction>
+       <account-id>116</account-id>
+       <amount>500.0</amount>
+       <cancelled-on nil="true"></cancelled-on>
+       <description>61745EN56/MORGAN STANLEY STEP</description>
+       <id>33</id>
+       <period>2013-10-15</period>
+       <price>102.8625</price>
+       <quantity nil="true"></quantity>
+       <symbol>61745en56</symbol>
+       <symbol-type nil="true"></symbol-type>
+       <transaction-date>2013-10-15T04:00:00Z</transaction-date>
+       <category-label>Investment Interest</category-label>
+     </transaction>
+    </transactions>
+
+    $ curl "https://GBqKXUDVHP20iXMcFJPUy1fU@secure.blueleaf.com/api/v1/transactions?since_id=0"
+    <?xml version="1.0" encoding="UTF-8"?>
+    <transactions>
+     <curent_page>0</curent_page>
+     <total_pages>1</total_pages>
+     <transaction>
+       <account-id>1</account-id>
+       <amount>2.0</amount>
+       <cancelled-on nil="true"></cancelled-on>
+       <description></description>
+       <id>1</id>
+       <period>2013-11-03</period>
+       <price nil="true"></price>
+       <quantity nil="true"></quantity>
+       <symbol nil="true"></symbol>
+       <symbol-type nil="true"></symbol-type>
+       <transaction-date nil="true"></transaction-date>
+       <category-label>Deposit</category-label>
+     </transaction>
+     <!--
+       31 transactions ommitted for brevity
+     -->
+     <transaction>
+       <account-id>116</account-id>
+       <amount>500.0</amount>
+       <cancelled-on nil="true"></cancelled-on>
+       <description>61745EN56/MORGAN STANLEY STEP</description>
+       <id>33</id>
+       <period>2013-10-15</period>
+       <price>102.8625</price>
+       <quantity nil="true"></quantity>
+       <symbol>61745en56</symbol>
+       <symbol-type nil="true"></symbol-type>
+       <transaction-date>2013-10-15T04:00:00Z</transaction-date>
+       <category-label>Investment Interest</category-label>
+     </transaction>
+    </transactions>
+
+    $ curl "https://GBqKXUDVHP20iXMcFJPUy1fU@secure.blueleaf.com/api/v1/transactions?since_id=0&page=1"
+    <?xml version="1.0" encoding="UTF-8"?>
+    <transactions/>
+
+## Schema (partial)
 
 Some fields in the API have values that come from a list. These lists are dynamic, they can change in the future depending on the advisor's usage of the system.
 
