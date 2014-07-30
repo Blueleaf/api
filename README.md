@@ -75,6 +75,7 @@ All requests are scoped relative to the API token provided. API tokens may be ge
           <institution-name>Fidelity</institution-name>
           <id>456</id>
           <name>Savings</name>
+          <account-number>0001234567</account-number>
           <current-net-value>$123,456.00</current-net-value>
           <last-update>2011-01-01T11:11:11Z</last-update>
           <holdings>
