@@ -13,7 +13,11 @@ The following will be removed in a future version of the API:
     <holding>
       <id /> // The id attribute will be removed. Please use <holding-id> to relate new holdings to historical holdings
     </holding>
-    
+
+    <account>
+      <number /> //The number attribute will be removed. Please use <account-number>
+    </account>
+
 ## Usage
 
 There is a blueleaf_client.rb demo script in this repository. It shows how one might use HTTParty to access the service.
@@ -97,13 +101,13 @@ All requests are scoped relative to the API token provided. API tokens may be ge
 
 **WARNING** This feature is beta-only. The interface is not final, and may change without notice.
 
-If you supply a 'page' parameter to the households request, you will get paginated detailed output. 
-Page numbers are zero-indexed. 
+If you supply a 'page' parameter to the households request, you will get paginated detailed output.
+Page numbers are zero-indexed.
 
-Implementations must handle page size dynamically, including the possibility of variably-sized pages. 
-Blueleaf reserves the right to adjust the page blocking algorithm. 
+Implementations must handle page size dynamically, including the possibility of variably-sized pages.
+Blueleaf reserves the right to adjust the page blocking algorithm.
 
-Note: It is possible for an advisor to add or remove a client between calls for different pages. 
+Note: It is possible for an advisor to add or remove a client between calls for different pages.
 To be certain that your list is complete, compare the results of your paginated data collection to the
 summary (unpaginated) households request (/api/v1/households.xml). If necessary, fill in missing clients
 with the single-household details request (api/v1/households/1.xml)
@@ -159,11 +163,11 @@ and two options:
     since_id
     page
 
-The first entry point is for bulk downloading. The second one is for a particular household. 
+The first entry point is for bulk downloading. The second one is for a particular household.
 
 ### Parameters
 
-If you supply no options, then you will get the last transaction for the query. Transactions are delivered in order of their id. We use an id-based "high water mark" synchronization technique. The bare query is an efficient/quick way to find out if you are up to date or not. If you have the transaction that it returns, then no new transactions have been added since your last pull. 
+If you supply no options, then you will get the last transaction for the query. Transactions are delivered in order of their id. We use an id-based "high water mark" synchronization technique. The bare query is an efficient/quick way to find out if you are up to date or not. If you have the transaction that it returns, then no new transactions have been added since your last pull.
 
 If you supply a "since_id", you will get all transactions that have been imported since the one who's id you supplied. There is never a transaction 0, so you can always get all transactions by supplying since_id=0. Note: we do **not** return the transaction with the id that you specify. You should read the query as "return all transactions that have been imported since transaction N". This means you can also test for new transactions by supplying the last transaction ID in your system as the since_id. If there are no new transactions, you will get an empty transaction list back.
 
@@ -175,7 +179,7 @@ The page size is currently set at 100 transactions, but this may change and it m
 
 Every query returns two additional attributes - the current page and the total number of pages for the query. Note that the number of pages can change between queries, as can the number of queries on the last page. This will happen if additional transactions are imported by our system between your queries. You should only take the page count as a guide, guarantee. Instead, you should terminate your iteration in one of three ways:
 
-* when you get a page who's current_page == total_pages - 1 
+* when you get a page who's current_page == total_pages - 1
 * when you get a page with an empty <transactions /> list.
 
 For future updates, you should supply a since_id equal to the id of the last transaction in your system (or the last one for the household if you are using that entry point).
@@ -185,7 +189,7 @@ For future updates, you should supply a since_id equal to the id of the last tra
 
 The example below uses the bulk entry point. It shows collecting the latest transaction only, then collecting all transactions, followed by a final iteration returning no transactions.
 
-    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0" 
+    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0"
     <?xml version="1.0" encoding="UTF-8"?>
     <transactions>
       <current_page>0</current_page>
@@ -274,7 +278,7 @@ The example below uses the bulk entry point. It shows collecting the latest tran
     $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=40"
     <?xml version="1.0" encoding="UTF-8"?>
     <transactions/>
-    $ 
+    $
 
 ## Schema (partial)
 
