@@ -1,5 +1,29 @@
 # Blueleaf API Documentation
 
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [Blueleaf API Documentation](#user-content-blueleaf-api-documentation)
+	- [Overview](#user-content-overview)
+	- [Deprecation Notice](#user-content-deprecation-notice)
+	- [Usage](#user-content-usage)
+		- [Basic Testing](#user-content-basic-testing)
+			- [Browser Testing](#user-content-browser-testing)
+			- [Command Line Testing](#user-content-command-line-testing)
+	- [Requests](#user-content-requests)
+		- [Admin summary](#user-content-admin-summary)
+		- [Households listing](#user-content-households-listing)
+		- [Household detail](#user-content-household-detail)
+		- [Multiple households with details (beta)](#user-content-multiple-households-with-details-beta)
+	- [Transactions (beta)](#user-content-transactions-beta)
+		- [Transactions Overview](#user-content-transactions-overview)
+		- [Parameters](#user-content-parameters)
+		- [Iteration](#user-content-iteration)
+		- [Example](#user-content-example)
+	- [Schema (partial)](#user-content-schema-partial)
+	- [Creating Users](#user-content-creating-users)
+		- [Possible errors](#user-content-possible-errors)
+		- [Examples](#user-content-examples)
+
 ## Overview
 
 We are exposing some account data via a read only API.  Users can get API tokens directly from the Blueleaf web interface.
@@ -281,6 +305,61 @@ The example below uses the bulk entry point. It shows collecting the latest tran
     <transactions/>
     $
 
+## Creating Users
+
+You can create clients of a firm by sending a POST request containing an `email` address, a `full_name` string, and an optional `password`. If you do not supply a password, the client will have to use the password recovery feature to set a password. 
+
+If the request succeeds, the household object will be returned. If it fails, the HTTP response code will indicate the nature of the problem, and the body will contain an error string. 
+
+### Possible errors
+
+The following error conditions can result from an otherwise valid request:
+
+* 400: INVALID_EMAIL_ADDRESS - The email address is missing or invalid
+* 409: EMAIL_IN_USE - a user account with this email address already exists
+
+### Examples
+
+    # Curl notes:
+    # * -d causes a POST request and adds form data to the request
+    # * you must quote -d values if they contain spaces
+    # * -w "%{http_code} causes curl to display the HTTP status code
+
+    # Email in use
+    $ curl --user <token>:skip -d email=john@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    <?xml version="1.0" encoding="UTF-8"?>
+    <hash>
+      <error>EMAIL_IN_USE</error>
+    </hash>
+    RESPONSE CODE: 409
+
+    # Invalid or missing email
+    $ curl --user <token>:skip -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households                          
+    <?xml version="1.0" encoding="UTF-8"?>
+    <hash>
+      <error>INVALID_EMAIL_ADDRESS</error>
+    </hash>
+    RESPONSE CODE: 400
+    $ curl --user <token>:skip -d email=john_p@blueleaf. -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    <?xml version="1.0" encoding="UTF-8"?>
+    <hash>
+      <error>INVALID_EMAIL_ADDRESS</error>
+    </hash>
+    RESPONSE CODE: 400
+
+    # Success
+    $ curl --user <token>:skip -d email=john_p@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    <?xml version="1.0" encoding="UTF-8"?>
+    <households>
+      <email>john_p@blueleaf.com</email>
+      <first-name>John</first-name>
+      <full-name>John Prendergast</full-name>
+      <id>45</id>
+      <last-name>Prendergast</last-name>
+    </households>
+    RESPONSE CODE: 200
+    $ 
+
 ## Schema (partial)
 
 Some fields in the API have values that come from a list. These lists are dynamic, they can change in the future depending on the advisor's usage of the system.
@@ -349,58 +428,3 @@ The following is a sample of possible values only. Please refer to the live API 
         </household>
       </households>
     </schema>
-
-## Creating Users
-
-You can create clients of a firm by sending a POST request containing an `email` address, a `full_name` string, and an optional `password`. If you do not supply a password, the client will have to use the password recovery feature to set a password. 
-
-If the request succeeds, the household object will be returned. If it fails, the HTTP response code will indicate the nature of the problem, and the body will contain an error string. 
-
-### Possible errors
-
-The following error conditions can result from an otherwise valid request:
-
-* 400: INVALID_EMAIL_ADDRESS - The email address is missing or invalid
-* 409: EMAIL_IN_USE - a user account with this email address already exists
-
-### Examples
-
-    # Curl notes:
-    # * -d causes a POST request and adds form data to the request
-    # * you must quote -d values if they contain spaces
-    # * -w "%{http_code} causes curl to display the HTTP status code
-
-    # Email in use
-    $ curl --user <token>:skip -d email=john@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
-    <?xml version="1.0" encoding="UTF-8"?>
-    <hash>
-      <error>EMAIL_IN_USE</error>
-    </hash>
-    RESPONSE CODE: 409
-
-    # Invalid or missing email
-    $ curl --user <token>:skip -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households                          
-    <?xml version="1.0" encoding="UTF-8"?>
-    <hash>
-      <error>INVALID_EMAIL_ADDRESS</error>
-    </hash>
-    RESPONSE CODE: 400
-    $ curl --user <token>:skip -d email=john_p@blueleaf. -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
-    <?xml version="1.0" encoding="UTF-8"?>
-    <hash>
-      <error>INVALID_EMAIL_ADDRESS</error>
-    </hash>
-    RESPONSE CODE: 400
-
-    # Success
-    $ curl --user <token>:skip -d email=john_p@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
-    <?xml version="1.0" encoding="UTF-8"?>
-    <households>
-      <email>john_p@blueleaf.com</email>
-      <first-name>John</first-name>
-      <full-name>John Prendergast</full-name>
-      <id>45</id>
-      <last-name>Prendergast</last-name>
-    </households>
-    RESPONSE CODE: 200
-    $ 
