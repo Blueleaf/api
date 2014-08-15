@@ -19,10 +19,10 @@
 		- [Parameters](#user-content-parameters)
 		- [Iteration](#user-content-iteration)
 		- [Example](#user-content-example)
-	- [Schema (partial)](#user-content-schema-partial)
 	- [Creating Users](#user-content-creating-users)
 		- [Possible errors](#user-content-possible-errors)
 		- [Examples](#user-content-examples)
+	- [Schema (partial)](#user-content-schema-partial)
 
 ## Overview
 
