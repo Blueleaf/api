@@ -350,7 +350,57 @@ The following is a sample of possible values only. Please refer to the live API 
       </households>
     </schema>
 
+## Creating Users
 
-## Support
+You can create clients of a firm by sending a POST request containing an `email` address, a `full_name` string, and an optional `password`. If you do not supply a password, the client will have to use the password recovery feature to set a password. 
 
-Use the github issues feature of this project to request new functionality or report problems.
+If the request succeeds, the household object will be returned. If it fails, the HTTP response code will indicate the nature of the problem, and the body will contain an error string. 
+
+### Possible errors
+
+The following error conditions can result from an otherwise valid request:
+
+* 400: INVALID_EMAIL_ADDRESS - The email address is missing or invalid
+* 409: EMAIL_IN_USE - a user account with this email address already exists
+
+### Examples
+
+    # Curl notes:
+    # * -d causes a POST request and adds form data to the request
+    # * you must quote -d values if they contain spaces
+    # * -w "%{http_code} causes curl to display the HTTP status code
+
+    # Email in use
+    $ curl --user <token>:skip -d email=john@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    <?xml version="1.0" encoding="UTF-8"?>
+    <hash>
+      <error>EMAIL_IN_USE</error>
+    </hash>
+    RESPONSE CODE: 409
+
+    # Invalid or missing email
+    $ curl --user <token>:skip -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households                          
+    <?xml version="1.0" encoding="UTF-8"?>
+    <hash>
+      <error>INVALID_EMAIL_ADDRESS</error>
+    </hash>
+    RESPONSE CODE: 400
+    $ curl --user <token>:skip -d email=john_p@blueleaf. -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    <?xml version="1.0" encoding="UTF-8"?>
+    <hash>
+      <error>INVALID_EMAIL_ADDRESS</error>
+    </hash>
+    RESPONSE CODE: 400
+
+    # Success
+    $ curl --user <token>:skip -d email=john_p@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    <?xml version="1.0" encoding="UTF-8"?>
+    <households>
+      <email>john_p@blueleaf.com</email>
+      <first-name>John</first-name>
+      <full-name>John Prendergast</full-name>
+      <id>45</id>
+      <last-name>Prendergast</last-name>
+    </households>
+    RESPONSE CODE: 200
+    $ 
