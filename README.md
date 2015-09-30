@@ -326,7 +326,7 @@ Here is a sample valid HTTP request:
 
     POST /api/v1/households HTTP/1.1
     Authorization: Basic.dG9rZW46c2tpcA==
-    User-Agent:.curl/7.37.1
+    User-Agent: curl/7.37.1
     Host: secure.blueleaf.com
     Accept: */*
     Content-Length: 50
