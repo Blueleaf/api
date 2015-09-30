@@ -307,9 +307,11 @@ The example below uses the bulk entry point. It shows collecting the latest tran
 
 ## Creating Users
 
-You can create clients of a firm by sending a POST request containing an `email` address, a `full_name` string, and an optional `password`. If you do not supply a password, the client will have to use the password recovery feature to set a password. 
+You can create clients of a firm by sending a POST request containing an `email` address, a `full_name` string, and an optional `password`. If you do not supply a password, the client will have to use the password recovery feature to set a password.
 
-If the request succeeds, the household object will be returned. If it fails, the HTTP response code will indicate the nature of the problem, and the body will contain an error string. 
+You must specify an HTTP `Content-Type` of `application/x-www-form-urlencoded`, and then supply the parameters in as the HTTP payload in the format `name=value&name2=value1`, etc. The payload must be URL encoded, so for example, spaces must be replaced with `%20`, etc.
+
+If the request succeeds, the household object will be returned. If it fails, the HTTP response code will indicate the nature of the problem, and the body will contain an error string.
 
 ### Possible errors
 
@@ -319,6 +321,21 @@ The following error conditions can result from an otherwise valid request:
 * 409: EMAIL_IN_USE - a user account with this email address already exists
 
 ### Examples
+
+Here is a sample valid HTTP request:
+
+    POST /api/v1/households HTTP/1.1
+    Authorization: Basic.dG9rZW46c2tpcA==
+    User-Agent:.curl/7.37.1
+    Host: secure.blueleaf.com
+    Accept: */*
+    Content-Length: 50
+    Content-Type: application/x-www-form-urlencoded
+
+    email=john@blueleaf.com&full_name=John.Prendergast
+
+
+If you have access to the `curl` command line utility, you can produce the above request as follows:
 
     # Curl notes:
     # * -d causes a POST request and adds form data to the request
@@ -334,7 +351,7 @@ The following error conditions can result from an otherwise valid request:
     RESPONSE CODE: 409
 
     # Invalid or missing email
-    $ curl --user <token>:skip -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households                          
+    $ curl --user <token>:skip -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
     <?xml version="1.0" encoding="UTF-8"?>
     <hash>
       <error>INVALID_EMAIL_ADDRESS</error>
@@ -358,7 +375,7 @@ The following error conditions can result from an otherwise valid request:
       <last-name>Prendergast</last-name>
     </households>
     RESPONSE CODE: 200
-    $ 
+    $
 
 ## Schema (partial)
 
