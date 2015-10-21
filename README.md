@@ -14,9 +14,9 @@
   - [Admin summary](#admin-summary)
   - [Households listing](#households-listing)
   - [Household detail](#household-detail)
-  - [Multiple households with details (beta)](#multiple-households-with-details-beta)
+  - [Multiple households with details](#multiple-households-with-details)
   - [Historical Detail](#historical-detail)
-- [Transactions (beta)](#transactions-beta)
+- [Transactions](#transactions)
   - [Transactions Overview](#transactions-overview)
   - [Parameters](#parameters)
   - [Iteration](#iteration)
@@ -188,7 +188,7 @@ or
 
 Note: For dates on which no data was collected, such as weekends or holidays, as a convenience we display the last known data for the account. If you need to explicitly filter out these results, you can compare the `period` attribute to the `date` attribute that you supplied in your query.
 
-## Transactions (beta)
+## Transactions
 
 ### Transactions Overview
 
