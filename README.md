@@ -1,28 +1,33 @@
 # Blueleaf API Documentation
 
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Blueleaf API Documentation](#user-content-blueleaf-api-documentation)
-	- [Overview](#user-content-overview)
-	- [Deprecation Notice](#user-content-deprecation-notice)
-	- [Usage](#user-content-usage)
-		- [Basic Testing](#user-content-basic-testing)
-			- [Browser Testing](#user-content-browser-testing)
-			- [Command Line Testing](#user-content-command-line-testing)
-	- [Requests](#user-content-requests)
-		- [Admin summary](#user-content-admin-summary)
-		- [Households listing](#user-content-households-listing)
-		- [Household detail](#user-content-household-detail)
-		- [Multiple households with details (beta)](#user-content-multiple-households-with-details-beta)
-	- [Transactions (beta)](#user-content-transactions-beta)
-		- [Transactions Overview](#user-content-transactions-overview)
-		- [Parameters](#user-content-parameters)
-		- [Iteration](#user-content-iteration)
-		- [Example](#user-content-example)
-	- [Creating Users](#user-content-creating-users)
-		- [Possible errors](#user-content-possible-errors)
-		- [Examples](#user-content-examples)
-	- [Schema (partial)](#user-content-schema-partial)
+- [Overview](#overview)
+- [Deprecation Notice](#deprecation-notice)
+- [Usage](#usage)
+  - [Basic Testing](#basic-testing)
+    - [Browser Testing](#browser-testing)
+    - [Command Line Testing](#command-line-testing)
+- [Requests](#requests)
+  - [Admin summary](#admin-summary)
+  - [Households listing](#households-listing)
+  - [Household detail](#household-detail)
+  - [Multiple households with details (beta)](#multiple-households-with-details-beta)
+  - [Historical Detail](#historical-detail)
+- [Transactions (beta)](#transactions-beta)
+  - [Transactions Overview](#transactions-overview)
+  - [Parameters](#parameters)
+  - [Iteration](#iteration)
+  - [Example](#example)
+- [Creating Users](#creating-users)
+  - [Possible errors](#possible-errors)
+  - [Examples](#examples)
+- [Schema (partial)](#schema-partial)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## Overview
 
@@ -122,20 +127,7 @@ All requests are scoped relative to the API token provided. API tokens may be ge
       </accounts>
     <household>
 
-### Historical Detail
-You can now query account detail for specific dates. To do so, add the query parameter `date`, and supply a value in the form `yyyy-mm-dd`. For example:
-
-    % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households/42?&date=2014-10-13"
-
-or
-
-    % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households?page=0&date=2014-10-13"
-
-Note: For dates on which no data was collected, such as weekends or holidays, as a convenience we display the last known data for the account. If you need to explicitly filter out these results, you can compare the `period` attribute to the `date` attribute that you supplied in your quer.
-
-### Multiple households with details (beta)
-
-**WARNING** This feature is beta-only. The interface is not final, and may change without notice.
+### Multiple households with details
 
 If you supply a 'page' parameter to the households request, you will get paginated detailed output.
 Page numbers are zero-indexed.
@@ -184,6 +176,17 @@ with the single-household details request (api/v1/households/1.xml)
         </accounts>
       <household>
     </households>
+
+### Historical Detail
+You can now query account detail for specific dates. To do so, add the query parameter `date`, and supply a value in the form `yyyy-mm-dd`. For example:
+
+    % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households/42?&date=2014-10-13"
+
+or
+
+    % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households?page=0&date=2014-10-13"
+
+Note: For dates on which no data was collected, such as weekends or holidays, as a convenience we display the last known data for the account. If you need to explicitly filter out these results, you can compare the `period` attribute to the `date` attribute that you supplied in your query.
 
 ## Transactions (beta)
 
