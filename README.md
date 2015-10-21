@@ -32,14 +32,14 @@ All requests are behind an SSL-protected (HTTPS) service, and use HTTP basic aut
 
 ## Deprecation Notice
 
-The following will be removed in a future version of the API:
+The following attributes were previously deprecated and scheduled to be removed. However we have instead replaced their supplied values with corrected values. They are now duplicate attributes, you may use either attribute.
 
     <holding>
-      <id /> // The id attribute will be removed. Please use <holding-id> to relate new holdings to historical holdings
+      <id /> // same as <holding-id>
     </holding>
 
     <account>
-      <number /> //The number attribute will be removed. Please use <account-number>
+      <number /> same as <account-number>
     </account>
 
 ## Usage
@@ -121,6 +121,17 @@ All requests are scoped relative to the API token provided. API tokens may be ge
         </account>
       </accounts>
     <household>
+
+### Historical Detail
+You can now query account detail for specific dates. To do so, add the query parameter `date`, and supply a value in the form `yyyy-mm-dd`. For example:
+
+    % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households/42?&date=2014-10-13"
+
+or
+
+    % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households?page=0&date=2014-10-13"
+
+Note: For dates on which no data was collected, such as weekends or holidays, as a convenience we display the last known data for the account. If you need to explicitly filter out these results, you can compare the `period` attribute to the `date` attribute that you supplied in your quer.
 
 ### Multiple households with details (beta)
 
