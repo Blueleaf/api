@@ -2,7 +2,7 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
 
 - [Overview](#overview)
 - [Deprecation Notice](#deprecation-notice)
@@ -15,7 +15,9 @@
   - [Households listing](#households-listing)
   - [Household detail](#household-detail)
   - [Multiple households with details](#multiple-households-with-details)
-  - [Historical Detail](#historical-detail)
+  - [Historical Detail (beta)](#historical-detail-beta)
+    - [Query](#query)
+    - [Balance Data](#balance-data)
 - [Transactions](#transactions)
   - [Transactions Overview](#transactions-overview)
   - [Parameters](#parameters)
@@ -27,7 +29,6 @@
 - [Schema (partial)](#schema-partial)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 
 ## Overview
 
@@ -105,6 +106,10 @@ All requests are scoped relative to the API token provided. API tokens may be ge
           <id>456</id>
           <name>Savings</name>
           <account-number>0001234567</account-number>
+          <balance>
+            <value>123456.00</value>
+            <period>2015-10-15</period>
+          </balance>
           <current-net-value>$123,456.00</current-net-value>
           <last-update>2011-01-01T11:11:11Z</last-update>
           <holdings>
@@ -177,8 +182,12 @@ with the single-household details request (api/v1/households/1.xml)
       <household>
     </households>
 
-### Historical Detail
-You can now query account detail for specific dates. To do so, add the query parameter `date`, and supply a value in the form `yyyy-mm-dd`. For example:
+### Historical Detail (beta)
+You can now query account detail for specific dates.
+
+#### Query
+
+Add the query parameter `date`, and supply a value in the form `yyyy-mm-dd`. For example:
 
     % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households/42?&date=2014-10-13"
 
@@ -187,6 +196,23 @@ or
     % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households?page=0&date=2014-10-13"
 
 Note: For dates on which no data was collected, such as weekends or holidays, as a convenience we display the last known data for the account. If you need to explicitly filter out these results, you can compare the `period` attribute to the `date` attribute that you supplied in your query.
+
+#### Balance Data
+
+Account detail includes `current-net-value` and `last-update` nodes. These nodes will always represent the actual account's most recent value and last updated time, regardless of what date was specified in the query. For the balance of the account on the requested date, use the `balance` node. This contains a `value` node and a `period` node. As above, the period will reflect the true date of the balance being presented, in case you queried for a date on which there was no data.
+
+For example, the following was extracted from a query with a date parameter of '2015-10-15'. You can see that `current-net-value` and `last_update` are unrleated to the data in the balance node, which does reflect the queried date:
+
+    <accounts>
+      <account>
+        <current-net-value type="decimal">80525.02477</current-net-value>
+        <last-update type="datetime">2015-10-24T04:40:34-11:00</last-update>
+        <balance>
+          <value>80270.22155</value>
+          <period>2015-10-15</period>
+        </balance>
+      </account>
+    </accounts>
 
 ## Transactions
 
