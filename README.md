@@ -189,11 +189,11 @@ You can now query account detail for specific dates.
 
 Add the query parameter `date`, and supply a value in the form `yyyy-mm-dd`. For example:
 
-    % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households/42?&date=2014-10-13"
+    % curl "https://<api-token>@secure.blueleaf.com/api/v1/households/42.xml?&date=2014-10-13"
 
 or
 
-    % curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/households?page=0&date=2014-10-13"
+    % curl "https://<api-token>@secure.blueleaf.com/api/v1/households.xml?page=0&date=2014-10-13"
 
 Note: For dates on which no data was collected, such as weekends or holidays, as a convenience we display the last known data for the account. If you need to explicitly filter out these results, you can compare the `period` attribute to the `date` attribute that you supplied in your query.
 
@@ -254,7 +254,7 @@ For future updates, you should supply a since_id equal to the id of the last tra
 
 The example below uses the bulk entry point. It shows collecting the latest transaction only, then collecting all transactions, followed by a final iteration returning no transactions.
 
-    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0"
+    $ curl "https://<api-token>@secure.blueleaf.com/api/v1/transactions.xml?since_id=0"
     <?xml version="1.0" encoding="UTF-8"?>
     <transactions>
       <current_page>0</current_page>
@@ -294,13 +294,13 @@ The example below uses the bulk entry point. It shows collecting the latest tran
       </transaction>
     </transactions>
 
-    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=1"
+    $ curl "https://<api-token>@secure.blueleaf.com/api/v1/transactions.xml?since_id=0&page=1"
     # output omitted
 
-    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=2"
+    $ curl "https://<api-token>@secure.blueleaf.com/api/v1/transactions.xml?since_id=0&page=2"
     # output omitted
 
-    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=39"
+    $ curl "https://<api-token>@secure.blueleaf.com/api/v1/transactions.xml?since_id=0&page=39"
     <?xml version="1.0" encoding="UTF-8"?>
     <transactions>
       <current_page>39</current_page>
@@ -340,7 +340,7 @@ The example below uses the bulk entry point. It shows collecting the latest tran
       </transaction>
     </transactions>
 
-    $ curl "https://TDMSMK66W43oaadT5WZ3JWPa@secure.blueleaf.com/api/v1/transactions?since_id=0&page=40"
+    $ curl "https://<api-token>@secure.blueleaf.com/api/v1/transactions.xml?since_id=0&page=40"
     <?xml version="1.0" encoding="UTF-8"?>
     <transactions/>
     $
