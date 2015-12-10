@@ -362,10 +362,12 @@ The following error conditions can result from an otherwise valid request:
 
 ### Examples
 
-Here is a sample valid HTTP request:
+Below is a sample valid HTTP request.
+
+Note: Authorization is the same as for all other requests. Regarding the sample output below, the parameter to HTTP Basic Authorization must be Base64 encoded - the credential string supplied in the below request was "token:skip" - your Base64 encoding library should encode that as "dG9rZW46c2tpcA==". For more details on HTTP basic , see https://en.wikipedia.org/wiki/Basic_access_authentication#Client_side.
 
     POST /api/v1/households HTTP/1.1
-    Authorization: Basic.dG9rZW46c2tpcA==
+    Authorization: Basic dG9rZW46c2tpcA==
     User-Agent: curl/7.37.1
     Host: secure.blueleaf.com
     Accept: */*
@@ -383,7 +385,7 @@ If you have access to the `curl` command line utility, you can produce the above
     # * -w "%{http_code} causes curl to display the HTTP status code
 
     # Email in use
-    $ curl --user <token>:skip -d email=john@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    $ curl --user <token>:skip -d email=john@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
     <?xml version="1.0" encoding="UTF-8"?>
     <hash>
       <error>EMAIL_IN_USE</error>
@@ -391,13 +393,13 @@ If you have access to the `curl` command line utility, you can produce the above
     RESPONSE CODE: 409
 
     # Invalid or missing email
-    $ curl --user <token>:skip -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    $ curl --user <token>:skip -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
     <?xml version="1.0" encoding="UTF-8"?>
     <hash>
       <error>INVALID_EMAIL_ADDRESS</error>
     </hash>
     RESPONSE CODE: 400
-    $ curl --user <token>:skip -d email=john_p@blueleaf. -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    $ curl --user <token>:skip -d email=john_p@blueleaf. -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
     <?xml version="1.0" encoding="UTF-8"?>
     <hash>
       <error>INVALID_EMAIL_ADDRESS</error>
@@ -405,7 +407,7 @@ If you have access to the `curl` command line utility, you can produce the above
     RESPONSE CODE: 400
 
     # Success
-    $ curl --user <token>:skip -d email=john_p@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" http://localhost:3000/api/v1/households
+    $ curl --user <token>:skip -d email=john_p@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
     <?xml version="1.0" encoding="UTF-8"?>
     <households>
       <email>john_p@blueleaf.com</email>
