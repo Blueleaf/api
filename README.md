@@ -409,13 +409,13 @@ If you have access to the `curl` command line utility, you can produce the above
     # Success
     $ curl --user <token>:skip -d email=john_p@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
     <?xml version="1.0" encoding="UTF-8"?>
-    <households>
+    <household>
       <email>john_p@blueleaf.com</email>
       <first-name>John</first-name>
       <full-name>John Prendergast</full-name>
       <id>45</id>
       <last-name>Prendergast</last-name>
-    </households>
+    </household>
     RESPONSE CODE: 200
     $
 
