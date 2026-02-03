@@ -15,7 +15,7 @@
   - [Households listing](#households-listing)
   - [Household detail](#household-detail)
   - [Multiple households with details](#multiple-households-with-details)
-  - [Historical Detail (beta)](#historical-detail-beta)
+  - [Historical Detail](#historical-detail)
     - [Query](#query)
     - [Balance Data](#balance-data)
 - [Transactions](#transactions)
@@ -23,10 +23,7 @@
   - [Parameters](#parameters)
   - [Iteration](#iteration)
   - [Example](#example)
-- [Creating Users](#creating-users)
-  - [Possible errors](#possible-errors)
-  - [Examples](#examples)
-- [Schema (partial)](#schema-partial)
+- [Schema](#schema)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -50,7 +47,9 @@ The following attributes were previously deprecated and scheduled to be removed.
 
 ## Usage
 
-There is a blueleaf_client.rb demo script in this repository. It shows how one might use HTTParty to access the service.
+There is a complete Postman collection published [here](https://www.postman.com/blueleaf-dev/blueleaf-public-api/collection/6989815-a2222bbc-420c-4236-87ab-f8a42dcbe724).
+
+There is also a blueleaf_client.rb demo script in this repository. It shows how one might use HTTParty to access the service.
 
 ### Basic Testing
 
@@ -182,7 +181,7 @@ with the single-household details request (api/v1/households/1.xml)
       <household>
     </households>
 
-### Historical Detail (beta)
+### Historical Detail
 You can now query account detail for specific dates.
 
 #### Query
@@ -345,145 +344,42 @@ The example below uses the bulk entry point. It shows collecting the latest tran
     <transactions/>
     $
 
-## Creating Users
 
-You can create clients of a firm by sending a POST request containing an `email` address, a `full_name` string, and an optional `password`. If you do not supply a password, the client will have to use the password recovery feature to set a password.
+## Schema
 
-You must specify an HTTP `Content-Type` of `application/x-www-form-urlencoded`, and then supply the parameters in as the HTTP payload in the format `name=value&name2=value1`, etc. The payload must be URL encoded, so for example, spaces must be replaced with `%20`, etc.
+The schema endpoint provides the most updated list of endpoints, XML elements and possible enumerations. 
 
-If the request succeeds, the household object will be returned. If it fails, the HTTP response code will indicate the nature of the problem, and the body will contain an error string.
+API clients must be able to handle future values that are unknown at implementation time. The list of possible values is provided as part of the schema interface.
 
-### Possible errors
-
-The following error conditions can result from an otherwise valid request:
-
-* 400: INVALID_EMAIL_ADDRESS - The email address is missing or invalid
-* 409: EMAIL_IN_USE - a user account with this email address already exists
-
-### Examples
-
-Below is a sample valid HTTP request.
-
-Note: Authorization is the same as for all other requests. Regarding the sample output below, the parameter to HTTP Basic Authorization must be Base64 encoded - the credential string supplied in the below request was "token:skip" - your Base64 encoding library should encode that as "dG9rZW46c2tpcA==". For more details on HTTP basic , see https://en.wikipedia.org/wiki/Basic_access_authentication#Client_side.
-
-    POST /api/v1/households HTTP/1.1
-    Authorization: Basic dG9rZW46c2tpcA==
-    User-Agent: curl/7.37.1
-    Host: secure.blueleaf.com
-    Accept: */*
-    Content-Length: 50
-    Content-Type: application/x-www-form-urlencoded
-
-    email=john@blueleaf.com&full_name=John.Prendergast
-
-
-If you have access to the `curl` command line utility, you can produce the above request as follows:
-
-    # Curl notes:
-    # * -d causes a POST request and adds form data to the request
-    # * you must quote -d values if they contain spaces
-    # * -w "%{http_code} causes curl to display the HTTP status code
-
-    # Email in use
-    $ curl --user <token>:skip -d email=john@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
-    <?xml version="1.0" encoding="UTF-8"?>
-    <hash>
-      <error>EMAIL_IN_USE</error>
-    </hash>
-    RESPONSE CODE: 409
-
-    # Invalid or missing email
-    $ curl --user <token>:skip -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
-    <?xml version="1.0" encoding="UTF-8"?>
-    <hash>
-      <error>INVALID_EMAIL_ADDRESS</error>
-    </hash>
-    RESPONSE CODE: 400
-    $ curl --user <token>:skip -d email=john_p@blueleaf. -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
-    <?xml version="1.0" encoding="UTF-8"?>
-    <hash>
-      <error>INVALID_EMAIL_ADDRESS</error>
-    </hash>
-    RESPONSE CODE: 400
-
-    # Success
-    $ curl --user <token>:skip -d email=john_p@blueleaf.com -d "full_name=John Prendergast" -w "%{http_code}\n" https://secure.blueleaf.com/api/v1/households
-    <?xml version="1.0" encoding="UTF-8"?>
-    <household>
-      <email>john_p@blueleaf.com</email>
-      <first-name>John</first-name>
-      <full-name>John Prendergast</full-name>
-      <id>45</id>
-      <last-name>Prendergast</last-name>
-    </household>
-    RESPONSE CODE: 200
-    $
-
-## Schema (partial)
-
-Some fields in the API have values that come from a list. These lists are dynamic, they can change in the future depending on the advisor's usage of the system.
-
-API clients must be able to handle future values that are unknown at implementation time. The list of possible values can be queried via a partial schema interface.
-
-The following is a sample of possible values only. Please refer to the live API for the current complete list.
+The following is a small sample. Please refer to the live API for the current complete schema.
 
     GET /api/v1/schema.xml
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <schema>
-      <households type="array">
-        <household>
-          <accounts type="array">
-            <account>
-              <account-type>
-                <values type="array">
-                  <value>
-                    <display-name>401k</display-name>
-                    <name>401k</name>
-                  </value>
-                  <value>
-                    <display-name>Annuity</display-name>
-                    <name>annuity</name>
-                  </value>
-                  <value>
-                    <display-name>Custodial</display-name>
-                    <name>custodial</name>
-                  </value>
-                  <value>
-                    <display-name>ESOPP</display-name>
-                    <name>esopp</name>
-                  </value>
-                  <value>
-                    <display-name>Individual</display-name>
-                    <name>individual</name>
-                  </value>
-                </values>
-              </account-type>
-              <holdings type="array">
-                <holding>
-                  <holding-type>
-                    <values type="array">
-                      <value>
-                        <name>bond</name>
-                      </value>
-                      <value>
-                        <name>currency</name>
-                      </value>
-                      <value>
-                        <name>mutualFund</name>
-                      </value>
-                      <value>
-                        <name>stock</name>
-                      </value>
-                      <value>
-                        <name>moneyMarketFund</name>
-                      </value>
-                    </values>
-                  </holding-type>
-                </holding>
-              </holdings>
-            </account>
-          </accounts>
-        </household>
-      </households>
+    <schema version="1.0">
+      <endpoints>
+        <endpoint path="/api/v1/advisor.xml" method="GET">
+          <description>Returns advisor information for the authenticated API token</description>
+            <response>
+                ...
+            </response>
+        </endpoint>
+            ...
+      </endpoints>
+      <elements>
+        <element name="Household" description="Household summary (used in list view)">
+          <field name="id" type="integer" description="Unique household identifier"/>
+          <field name="email" type="string" description="Client email address"/>
+            ...
+        </element>
+            ...
+      </elements>
+      <enumerations>
+        <enumeration name="AccountTypeEnum" description="Valid account type values. Note: This list is dynamic and may change.">
+          <value name="Traditional IRA" display_name=""/>
+          <value name="Roth IRA" display_name=""/>
+            ...
+        </enumeration>
+            ...
+      </enumerations>
     </schema>
+
